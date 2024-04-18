@@ -1,18 +1,27 @@
-# Makefile
-run-dist: # Run application
-	@./build/install/app/bin/app -h
+.DEFAULT_GOAL := build-run
+
+run-dist:
+	./build/install/app/bin/app
 
 build:
-	@./gradlew clean build
+	./gradlew build
 
-install:
-	@./gradlew clean install
+run:
+	./gradlew run
 
 test:
-	@./gradlew test
+	./gradlew test
+
+lint:
+	./gradlew checkstyleMain checkstyleTest
 
 report:
-	@./gradlew jacocoTestReport
+	./gradlew jacocoTestReport
 
+build-run:
+	build run
+
+start:
+	APP_ENV=development ./gradlew run
 
 .PHONY: build
