@@ -3,6 +3,7 @@ plugins {
     jacoco
     application
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("io.freefair.lombok") version "8.6"
 }
 
 group = "hexlet.code"
@@ -20,6 +21,8 @@ dependencies {
     testImplementation("org.slf4j:slf4j-simple:2.0.13")
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation("com.zaxxer:HikariCP:5.1.0")
+
 }
 
 tasks.named<Test>("test") {
