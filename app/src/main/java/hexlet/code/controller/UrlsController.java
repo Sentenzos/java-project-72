@@ -1,15 +1,14 @@
 package hexlet.code.controller;
 
-import hexlet.code.dto.MainPage;
 import hexlet.code.dto.UrlPage;
 import hexlet.code.dto.UrlsPage;
 import hexlet.code.model.Url;
 import hexlet.code.repository.UrlsRepository;
 import hexlet.code.util.NamedRoutes;
+import hexlet.code.util.NormalizeUrl;
 import io.javalin.http.Context;
 
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.SQLDataException;
 import java.sql.SQLException;
@@ -29,17 +28,21 @@ public class UrlsController {
     public static void show(Context ctx) throws SQLException {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         String flash = ctx.consumeSessionAttribute("flash");
-        //TODO обработка кейса, когда нет найденного
-        var url = UrlsRepository.find(id).get();
-        var page = new UrlPage(url);
-        ctx.render("urls/show.jte", model("page", page));
+        //TODO рефактор
+        var urlOptional = UrlsRepository.find(id);
+        if (urlOptional.isPresent()) {
+            var url = urlOptional.get();
+            var page = new UrlPage(url);
+            ctx.render("urls/show.jte", model("page", page));
+        } else {
+            ctx.result("Page not found").status(404);
+        }
     }
 
     public static void create(Context ctx) throws SQLException {
         var url = ctx.formParamAsClass("url", String.class).get();
         try {
-            var u = new URI(url).toURL();
-            String uri = u.getProtocol() + "://" + u.getHost() + (u.getPort() != -1 ? (":" + u.getPort()) : "");
+            String uri = NormalizeUrl.normalize(url);
             if (UrlsRepository.findByName(uri).isPresent()) {
                 throw new SQLDataException();
             }
