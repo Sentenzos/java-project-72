@@ -8,9 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UrlsRepository extends BaseRepository {
+public class UrlRepository extends BaseRepository {
 
-    // BEGIN
     public static void save(Url url) throws SQLException {
         String sql = "INSERT INTO urls (name, created_at) VALUES (?, ?)";
         try (var conn = dataSource.getConnection();
@@ -71,12 +70,11 @@ public class UrlsRepository extends BaseRepository {
                 var id = resultSet.getLong("id");
                 var name = resultSet.getString("name");
                 var createdAt = resultSet.getTimestamp("created_at");
-                var product = new Url(name, createdAt);
-                product.setId(id);
-                result.add(product);
+                var url = new Url(name, createdAt);
+                url.setId(id);
+                result.add(url);
             }
             return result;
         }
     }
-    // END
 }

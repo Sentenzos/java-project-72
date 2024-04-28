@@ -10,11 +10,19 @@ public class NamedRoutes {
         return "/urls";
     }
 
-    public static String urlPath(Integer id) {
+    public static String urlPath(Long id) {
         return urlPath(String.valueOf(id));
     }
 
     public static String urlPath(String id) {
         return "/urls/" + id;
+    }
+
+    public static String urlChecks(Long id) {
+        return urlChecks(String.valueOf(id));
+    }
+
+    public static String urlChecks(String id) {
+        return "/urls/" + id + "/checks";
     }
 }

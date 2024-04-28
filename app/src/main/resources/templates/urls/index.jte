@@ -1,4 +1,5 @@
 @import hexlet.code.dto.UrlsPage
+@import hexlet.code.util.NamedRoutes
 @param UrlsPage page
 
 @template.layout.page(content = @`
@@ -6,6 +7,6 @@
         <div>${page.getFlash()}</div>
     @endif
     @for(var url: page.getUrls())
-        <div>${url.getName()}</div>
+        <a href="${NamedRoutes.urlPath(url.getId())}">${url.getName()}</a>
     @endfor
 `)
