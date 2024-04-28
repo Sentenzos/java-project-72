@@ -9,6 +9,7 @@ import hexlet.code.repository.UrlRepository;
 import hexlet.code.util.NamedRoutes;
 import hexlet.code.util.NormalizeUrl;
 import io.javalin.http.Context;
+import io.javalin.http.NotFoundResponse;
 import kong.unirest.Unirest;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -25,7 +26,6 @@ import static io.javalin.rendering.template.TemplateUtil.model;
 public class UrlsController {
     public static void index(Context ctx) throws SQLException {
         String flash = ctx.consumeSessionAttribute("flash");
-        //TODO обработка кейса, когда нет найденных
         var urls = UrlRepository.getEntities();
         var page = new UrlsPage(urls, flash);
         ctx.render("urls/index.jte", model("page", page));
@@ -33,20 +33,14 @@ public class UrlsController {
 
     public static void show(Context ctx) throws SQLException {
         var id = ctx.pathParamAsClass("id", Long.class).get();
-
-        //TODO рефактор
-        var urlOptional = UrlRepository.find(id);
-        if (urlOptional.isPresent()) {
-            var url = urlOptional.get();
-            var checks = UrlCheckRepository.findByUrlId(url.getId());
-            String flash = ctx.consumeSessionAttribute("flash");
-            var page = new UrlPage(url);
-            page.setChecks(checks);
-            page.setFlash(flash);
-            ctx.render("urls/show.jte", model("page", page));
-        } else {
-            ctx.result("Page not found").status(404);
-        }
+        var url = UrlRepository.find(id)
+                .orElseThrow(() -> new NotFoundResponse(String.format("Url with id = %s not found", id)));
+        var checks = UrlCheckRepository.findByUrlId(url.getId());
+        String flash = ctx.consumeSessionAttribute("flash");
+        var page = new UrlPage(url);
+        page.setChecks(checks);
+        page.setFlash(flash);
+        ctx.render("urls/show.jte", model("page", page));
     }
 
     public static void create(Context ctx) throws SQLException {
@@ -72,7 +66,7 @@ public class UrlsController {
         }
     }
 
-    public static void check(Context ctx) throws SQLException, IOException {
+    public static void check(Context ctx) throws SQLException {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         var url = UrlRepository.find(id).get();
         var response = Unirest.get(url.getName()).asString();
