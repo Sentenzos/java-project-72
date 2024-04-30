@@ -9,10 +9,9 @@ import java.util.List;
 
 @Setter
 @Getter
-public class UrlPage {
+public class UrlPage extends BasePage {
     Url url;
     List<UrlCheck> checks;
-    String flash;
 
     public UrlPage(Url url) {
         this.url = url;

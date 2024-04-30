@@ -1,14 +1,17 @@
 package hexlet.code.controller;
 
-import hexlet.code.dto.MainPage;
+import hexlet.code.dto.BasePage;
 import io.javalin.http.Context;
 
-import static io.javalin.rendering.template.TemplateUtil.model;
+import java.util.Collections;
 
 public class RootController {
     public static void index(Context ctx) {
         String flash = ctx.consumeSessionAttribute("flash");
-        var page = new MainPage(flash);
-        ctx.render("index.jte", model("page", page));
+        String flashType = ctx.consumeSessionAttribute("flashType");
+        var page = new BasePage();
+        page.setFlash(flash);
+        page.setFlashType(flashType);
+        ctx.render("index.jte", Collections.singletonMap("page", page));
     }
 }

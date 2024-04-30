@@ -57,7 +57,7 @@ class AppTest {
     }
 
     @Test
-    void testMainPageStatus() throws Exception {
+    void testMainPageStatus() {
         JavalinTest.test(app, (server, client) -> {
             var response = client.get("/");
             assertThat(response.code()).isEqualTo(200);
@@ -68,7 +68,8 @@ class AppTest {
     void testUrlPage() throws Exception {
         var createdAt = new Timestamp(System.currentTimeMillis());
         String expectedUrl = "https://ru.hexlet.io";
-        var url = new Url(expectedUrl, createdAt);
+        var url = new Url(expectedUrl);
+        url.setCreatedAt(createdAt);
         UrlRepository.save(url);
 
         JavalinTest.test(app, (server, client) -> {
