@@ -1,12 +1,12 @@
 # Makefile
-run-dist:
-	@./build/install/app/bin/app
+run-dist: # Run application
+	@./build/install/app/bin/app -h
 
 build:
 	@./gradlew clean build
 
 install:
-	@./gradlew clean installDist
+	@./gradlew clean install
 
 test:
 	@./gradlew test
