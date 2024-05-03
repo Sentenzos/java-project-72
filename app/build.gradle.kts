@@ -22,7 +22,7 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("com.h2database:h2:2.2.220")
     implementation("com.zaxxer:HikariCP:5.1.0")
-//    implementation("org.postgresql:postgresql:42.7.3")
+    implementation("org.postgresql:postgresql:42.7.3")
     implementation("gg.jte:jte:3.1.10")
     implementation("io.javalin:javalin:6.1.3")
     implementation("io.javalin:javalin-bundle:6.1.3")
