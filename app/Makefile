@@ -8,9 +8,6 @@ build:
 install:
 	@./gradlew clean installDist
 
-test:
-	@./gradlew test
-
 report:
 	@./gradlew jacocoTestReport
 
