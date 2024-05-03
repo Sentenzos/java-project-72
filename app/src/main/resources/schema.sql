@@ -8,7 +8,7 @@ CREATE TABLE urls (
 );
 
 CREATE TABLE url_checks (
-    url_id LONG REFERENCES urls(id),
+    url_id BIGINT REFERENCES urls(id),
     id BIGINT GENERATED ALWAYS AS IDENTITY,
     status_code INTEGER,
     h1 VARCHAR(255),
